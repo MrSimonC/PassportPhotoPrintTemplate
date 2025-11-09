@@ -31,7 +31,12 @@ export default function UploadStep({ onUpload }: UploadStepProps) {
       setIsConverting(true);
       try {
         // Dynamic import to avoid SSR issues (heic2any uses browser APIs)
-        const heic2any = (await import('heic2any')).default;
+        const heic2anyModule = await import('heic2any');
+        const heic2any = (heic2anyModule.default ?? heic2anyModule) as typeof import('heic2any').default;
+
+        if (typeof heic2any !== 'function') {
+          throw new Error('heic2any failed to load');
+        }
 
         const convertedBlob = await heic2any({
           blob: file,
