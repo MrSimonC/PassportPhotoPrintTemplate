@@ -116,7 +116,7 @@ export default function GenerateStep({ croppedImage, onBack, onStartOver }: Gene
                 <p className="font-semibold mb-1">Ready to print!</p>
                 <ul className="list-disc list-inside space-y-1">
                   <li>Image size: 6×4 inches (1800×1200 pixels at 300 DPI)</li>
-                  <li>Contains 6 passport photos arranged in a 2×3 grid</li>
+                  <li>Contains 6 passport photos (2×2 inches each) arranged in a 3×2 grid</li>
                   <li>Print on photo paper for best results</li>
                 </ul>
               </div>
