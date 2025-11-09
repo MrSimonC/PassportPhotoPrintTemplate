@@ -95,25 +95,4 @@ export const testImageScenarios = {
     const buffer = await createTestImage(700, 500);
     return bufferToDataURL(buffer);
   },
-
-  // HEIC image (real world scenario)
-  heicImage: async () => {
-    const fs = await import('fs');
-    const path = await import('path');
-    const convert = (await import('heic-convert')).default;
-    const heicPath = path.join(__dirname, '../fixtures/test-large-image-heic.heic');
-
-    // Read HEIC file
-    const heicBuffer = fs.readFileSync(heicPath);
-
-    // Convert HEIC to PNG using heic-convert
-    // heic-convert expects a Uint8Array
-    const pngBuffer = await convert({
-      buffer: new Uint8Array(heicBuffer),
-      format: 'PNG',
-      quality: 1
-    });
-
-    return bufferToDataURL(Buffer.from(pngBuffer), 'image/png');
-  },
 };
