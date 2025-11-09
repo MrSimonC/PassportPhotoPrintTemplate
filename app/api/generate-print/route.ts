@@ -39,27 +39,18 @@ export async function POST(request: NextRequest) {
     const photoWidth = photoContentWidth + (borderSize * 2);
     const photoHeight = photoContentHeight + (borderSize * 2);
 
-    // Resize the cropped image to UK passport photo size
-    const resizedPhotoContent = await sharp(imageBuffer)
+    // Resize the cropped image to UK passport photo size and add white border
+    const resizedPhoto = await sharp(imageBuffer)
       .resize(photoContentWidth, photoContentHeight, {
         fit: 'fill',
       })
-      .toBuffer();
-
-    // Create a photo with white border
-    const resizedPhoto = await sharp({
-      create: {
-        width: photoWidth,
-        height: photoHeight,
-        channels: 3,
-        background: { r: 255, g: 255, b: 255 },
-      },
-    })
-      .composite([{
-        input: resizedPhotoContent,
+      .extend({
         top: borderSize,
+        bottom: borderSize,
         left: borderSize,
-      }])
+        right: borderSize,
+        background: { r: 255, g: 255, b: 255 }
+      })
       .toBuffer();
 
     // Calculate spacing for a 3x2 grid (3 columns, 2 rows)
