@@ -47,7 +47,7 @@ export default function Home() {
                 photo_camera
               </span>
               <h1 className="text-xl font-bold text-gray-800 dark:text-white">
-                Passport Photo Generator
+                UK Passport Photo Generator
               </h1>
             </div>
             <div className="flex items-center gap-4">

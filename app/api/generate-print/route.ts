@@ -28,16 +28,38 @@ export async function POST(request: NextRequest) {
     const canvasHeight = 1200;
     const dpi = 300;
 
-    // Standard passport photo size: 2x2 inches at 300 DPI = 600x600 pixels
-    const photoWidth = 600;
-    const photoHeight = 600;
+    // UK passport photo size: 35mm x 45mm at 300 DPI = 413 x 531 pixels
+    const photoContentWidth = 413;
+    const photoContentHeight = 531;
 
-    // Resize the cropped image to passport photo size
-    // Use 'fill' to ensure the entire cropped image is used without additional cropping
-    const resizedPhoto = await sharp(imageBuffer)
-      .resize(photoWidth, photoHeight, {
+    // White border around each photo (like traditional passport photos)
+    const borderSize = 12; // pixels (about 1mm at 300 DPI)
+
+    // Total photo size including border
+    const photoWidth = photoContentWidth + (borderSize * 2);
+    const photoHeight = photoContentHeight + (borderSize * 2);
+
+    // Resize the cropped image to UK passport photo size
+    const resizedPhotoContent = await sharp(imageBuffer)
+      .resize(photoContentWidth, photoContentHeight, {
         fit: 'fill',
       })
+      .toBuffer();
+
+    // Create a photo with white border
+    const resizedPhoto = await sharp({
+      create: {
+        width: photoWidth,
+        height: photoHeight,
+        channels: 3,
+        background: { r: 255, g: 255, b: 255 },
+      },
+    })
+      .composite([{
+        input: resizedPhotoContent,
+        top: borderSize,
+        left: borderSize,
+      }])
       .toBuffer();
 
     // Calculate spacing for a 3x2 grid (3 columns, 2 rows)

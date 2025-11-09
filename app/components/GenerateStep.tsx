@@ -62,10 +62,10 @@ export default function GenerateStep({ croppedImage, onBack, onStartOver }: Gene
     <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8">
       <div className="text-center mb-6">
         <h2 className="text-3xl font-bold text-gray-800 dark:text-white mb-2">
-          Your Passport Photo Print
+          Your UK Passport Photo Print
         </h2>
         <p className="text-gray-600 dark:text-gray-300">
-          6 passport photos on a 6×4 inch print
+          6 UK passport photos (35×45mm) on a 6×4 inch print with white borders
         </p>
       </div>
 
@@ -116,7 +116,8 @@ export default function GenerateStep({ croppedImage, onBack, onStartOver }: Gene
                 <p className="font-semibold mb-1">Ready to print!</p>
                 <ul className="list-disc list-inside space-y-1">
                   <li>Image size: 6×4 inches (1800×1200 pixels at 300 DPI)</li>
-                  <li>Contains 6 passport photos (2×2 inches each) arranged in a 3×2 grid</li>
+                  <li>Contains 6 UK passport photos (35×45mm each) arranged in a 3×2 grid</li>
+                  <li>Each photo has white borders to guide cutting</li>
                   <li>Print on photo paper for best results</li>
                 </ul>
               </div>
@@ -134,7 +135,8 @@ export default function GenerateStep({ croppedImage, onBack, onStartOver }: Gene
                   <li>Use glossy or matte photo paper for best quality</li>
                   <li>Select 6×4 inch size in your printer settings</li>
                   <li>Ensure borderless printing is enabled</li>
-                  <li>Cut carefully along the edges of each photo</li>
+                  <li>Cut along the white borders to separate each 35×45mm photo</li>
+                  <li>White borders help guide precise cutting</li>
                 </ul>
               </div>
             </div>
