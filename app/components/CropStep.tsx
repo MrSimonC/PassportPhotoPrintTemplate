@@ -57,8 +57,38 @@ export default function CropStep({ image, onCrop, onBack }: CropStepProps) {
         croppedAreaPixels.height
       );
 
-      // Convert to data URL
-      const croppedImageDataUrl = canvas.toDataURL('image/png');
+      // Convert to a JPEG blob to keep the payload size manageable for the API route
+      const blob = await new Promise<Blob>((resolve, reject) => {
+        canvas.toBlob(
+          (result) => {
+            if (result) {
+              resolve(result);
+            } else {
+              reject(new Error('Failed to convert canvas to blob'));
+            }
+          },
+          'image/jpeg',
+          0.92
+        );
+      });
+
+      // Convert the blob to a data URL for the rest of the flow
+      const croppedImageDataUrl = await new Promise<string>((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          const result = reader.result;
+          if (typeof result === 'string') {
+            resolve(result);
+          } else {
+            reject(new Error('Failed to read cropped image data'));
+          }
+        };
+        reader.onerror = () => {
+          reject(new Error('Failed to read cropped image blob'));
+        };
+        reader.readAsDataURL(blob);
+      });
+
       onCrop(croppedImageDataUrl);
     } catch (error) {
       console.error('Error cropping image:', error);
