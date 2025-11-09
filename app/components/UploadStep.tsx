@@ -94,6 +94,7 @@ export default function UploadStep({ onUpload }: UploadStepProps) {
                 src="/how-it-works-1-upload.jpg"
                 alt="Upload your photo - example showing file upload interface"
                 className="w-full h-auto"
+                style={{ maxHeight: '274px' }}
                 loading="lazy"
               />
             </div>
