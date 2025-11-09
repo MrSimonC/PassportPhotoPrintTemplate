@@ -34,10 +34,10 @@ export async function POST(request: NextRequest) {
     const photoHeight = 750;
 
     // Resize the cropped image to passport photo size
+    // Use 'fill' to ensure the entire cropped image is used without additional cropping
     const resizedPhoto = await sharp(imageBuffer)
       .resize(photoWidth, photoHeight, {
-        fit: 'cover',
-        position: 'center',
+        fit: 'fill',
       })
       .toBuffer();
 
