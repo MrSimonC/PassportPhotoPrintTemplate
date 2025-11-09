@@ -94,7 +94,7 @@ export default function UploadStep({ onUpload }: UploadStepProps) {
                 src="/how-it-works-1-upload.jpg"
                 alt="Upload your photo - example showing file upload interface"
                 className="w-full h-auto"
-                style={{ maxHeight: '274px' }}
+                style={{ maxHeight: '274px', objectFit: 'contain' }}
                 loading="lazy"
               />
             </div>
@@ -134,6 +134,7 @@ export default function UploadStep({ onUpload }: UploadStepProps) {
                 src="/how-it-works-2-crop.jpg"
                 alt="Crop your photo - example showing cropping interface with passport photo dimensions"
                 className="w-full h-auto"
+                style={{ objectFit: 'contain' }}
                 loading="lazy"
               />
             </div>
@@ -147,6 +148,7 @@ export default function UploadStep({ onUpload }: UploadStepProps) {
                 src="/how-it-works-3-output.jpg"
                 alt="Download and print - example showing 6 passport photos arranged in a 3x2 grid on 6x4 inch sheet"
                 className="w-full h-auto"
+                style={{ objectFit: 'contain' }}
                 loading="lazy"
               />
             </div>
