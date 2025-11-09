@@ -85,7 +85,7 @@ export default function CropStep({ image, onCrop, onBack }: CropStepProps) {
           image={image}
           crop={crop}
           zoom={zoom}
-          aspect={3 / 4}
+          aspect={1}
           onCropChange={setCrop}
           onZoomChange={setZoom}
           onCropComplete={onCropComplete}

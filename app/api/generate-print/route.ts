@@ -29,9 +29,8 @@ export async function POST(request: NextRequest) {
     const dpi = 300;
 
     // Standard passport photo size: 2x2 inches at 300 DPI = 600x600 pixels
-    // But we'll use a 2x2.5 inch size (600x750 pixels) for better passport photo proportions
     const photoWidth = 600;
-    const photoHeight = 750;
+    const photoHeight = 600;
 
     // Resize the cropped image to passport photo size
     // Use 'fill' to ensure the entire cropped image is used without additional cropping
@@ -41,9 +40,9 @@ export async function POST(request: NextRequest) {
       })
       .toBuffer();
 
-    // Calculate spacing for a 2x3 grid (2 columns, 3 rows)
-    const cols = 2;
-    const rows = 3;
+    // Calculate spacing for a 3x2 grid (3 columns, 2 rows)
+    const cols = 3;
+    const rows = 2;
     const horizontalSpacing = (canvasWidth - cols * photoWidth) / (cols + 1);
     const verticalSpacing = (canvasHeight - rows * photoHeight) / (rows + 1);
 
