@@ -85,7 +85,7 @@ export default function CropStep({ image, onCrop, onBack }: CropStepProps) {
           image={image}
           crop={crop}
           zoom={zoom}
-          aspect={1}
+          aspect={35 / 45}
           onCropChange={setCrop}
           onZoomChange={setZoom}
           onCropComplete={onCropComplete}
@@ -120,8 +120,9 @@ export default function CropStep({ image, onCrop, onBack }: CropStepProps) {
             info
           </span>
           <div className="text-sm text-blue-800 dark:text-blue-200">
-            <p className="font-semibold mb-1">Passport photo guidelines:</p>
+            <p className="font-semibold mb-1">UK passport photo guidelines:</p>
             <ul className="list-disc list-inside space-y-1">
+              <li>Photo size: 35×45mm (portrait orientation)</li>
               <li>Face should be centered and clearly visible</li>
               <li>Include head and top of shoulders</li>
               <li>Maintain neutral expression with eyes open</li>
