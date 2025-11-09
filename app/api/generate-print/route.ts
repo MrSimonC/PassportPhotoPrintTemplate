@@ -85,7 +85,7 @@ export async function POST(request: NextRequest) {
       },
     })
       .composite(compositeOperations)
-      .jpeg({ quality: 95 })
+      .png()
       .withMetadata({
         density: dpi,
       })
@@ -94,8 +94,8 @@ export async function POST(request: NextRequest) {
     // Return the image as a response
     return new NextResponse(finalImage as unknown as BodyInit, {
       headers: {
-        'Content-Type': 'image/jpeg',
-        'Content-Disposition': 'inline; filename="passport-photos.jpg"',
+        'Content-Type': 'image/png',
+        'Content-Disposition': 'inline; filename="passport-photos.png"',
       },
     });
   } catch (error) {

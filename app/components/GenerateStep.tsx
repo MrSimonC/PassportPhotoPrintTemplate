@@ -52,7 +52,7 @@ export default function GenerateStep({ croppedImage, onBack, onStartOver }: Gene
 
     const link = document.createElement('a');
     link.href = generatedImage;
-    link.download = `passport-photos-${Date.now()}.jpg`;
+    link.download = `passport-photos-${Date.now()}.png`;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);

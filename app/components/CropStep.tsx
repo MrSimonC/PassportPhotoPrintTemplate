@@ -58,7 +58,7 @@ export default function CropStep({ image, onCrop, onBack }: CropStepProps) {
       );
 
       // Convert to data URL
-      const croppedImageDataUrl = canvas.toDataURL('image/jpeg', 0.95);
+      const croppedImageDataUrl = canvas.toDataURL('image/png');
       onCrop(croppedImageDataUrl);
     } catch (error) {
       console.error('Error cropping image:', error);
