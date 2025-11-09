@@ -1,7 +1,6 @@
 'use client';
 
 import { useRef, useState } from 'react';
-import heic2any from 'heic2any';
 
 interface UploadStepProps {
   onUpload: (imageDataUrl: string) => void;
@@ -31,6 +30,9 @@ export default function UploadStep({ onUpload }: UploadStepProps) {
     if (isHEIC) {
       setIsConverting(true);
       try {
+        // Dynamic import to avoid SSR issues (heic2any uses browser APIs)
+        const heic2any = (await import('heic2any')).default;
+
         const convertedBlob = await heic2any({
           blob: file,
           toType: 'image/jpeg',

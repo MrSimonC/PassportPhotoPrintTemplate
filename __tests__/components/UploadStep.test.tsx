@@ -2,13 +2,12 @@ import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import UploadStep from '@/app/components/UploadStep';
 
-// Mock heic2any
+// Mock heic2any for dynamic imports
+const mockHeic2any = jest.fn();
 jest.mock('heic2any', () => ({
   __esModule: true,
-  default: jest.fn(),
+  default: mockHeic2any,
 }));
-
-import heic2any from 'heic2any';
 
 describe('UploadStep Component', () => {
   let mockOnUpload: jest.Mock;
@@ -45,7 +44,7 @@ describe('UploadStep Component', () => {
     });
 
     // Verify heic2any was not called for regular images
-    expect(heic2any).not.toHaveBeenCalled();
+    expect(mockHeic2any).not.toHaveBeenCalled();
 
     // Verify the data URL was passed
     const dataUrl = mockOnUpload.mock.calls[0][0];
@@ -55,7 +54,7 @@ describe('UploadStep Component', () => {
   it('should convert HEIC images to JPEG before upload', async () => {
     // Mock heic2any to return a JPEG blob
     const mockJpegBlob = new Blob(['fake-jpeg-data'], { type: 'image/jpeg' });
-    (heic2any as jest.Mock).mockResolvedValueOnce(mockJpegBlob);
+    mockHeic2any.mockResolvedValueOnce(mockJpegBlob);
 
     const { container } = render(<UploadStep onUpload={mockOnUpload} />);
 
@@ -75,7 +74,7 @@ describe('UploadStep Component', () => {
     }, { timeout: 3000 });
 
     // Verify heic2any was called with correct parameters
-    expect(heic2any).toHaveBeenCalledWith({
+    expect(mockHeic2any).toHaveBeenCalledWith({
       blob: heicFile,
       toType: 'image/jpeg',
       quality: 0.9,
@@ -89,7 +88,7 @@ describe('UploadStep Component', () => {
   it('should detect HEIC by file extension', async () => {
     // Mock heic2any to return a JPEG blob
     const mockJpegBlob = new Blob(['fake-jpeg-data'], { type: 'image/jpeg' });
-    (heic2any as jest.Mock).mockResolvedValueOnce(mockJpegBlob);
+    mockHeic2any.mockResolvedValueOnce(mockJpegBlob);
 
     const { container } = render(<UploadStep onUpload={mockOnUpload} />);
 
@@ -103,13 +102,13 @@ describe('UploadStep Component', () => {
 
     // Should trigger conversion
     await waitFor(() => {
-      expect(heic2any).toHaveBeenCalled();
+      expect(mockHeic2any).toHaveBeenCalled();
     });
   });
 
   it('should handle HEIC conversion errors gracefully', async () => {
     // Mock heic2any to throw an error
-    (heic2any as jest.Mock).mockRejectedValueOnce(new Error('Conversion failed'));
+    mockHeic2any.mockRejectedValueOnce(new Error('Conversion failed'));
 
     // Mock alert
     const alertMock = jest.spyOn(window, 'alert').mockImplementation(() => {});
@@ -137,7 +136,7 @@ describe('UploadStep Component', () => {
     // Mock heic2any returning an array of blobs (multi-image HEIC)
     const mockJpegBlob1 = new Blob(['fake-jpeg-1'], { type: 'image/jpeg' });
     const mockJpegBlob2 = new Blob(['fake-jpeg-2'], { type: 'image/jpeg' });
-    (heic2any as jest.Mock).mockResolvedValueOnce([mockJpegBlob1, mockJpegBlob2]);
+    mockHeic2any.mockResolvedValueOnce([mockJpegBlob1, mockJpegBlob2]);
 
     const { container } = render(<UploadStep onUpload={mockOnUpload} />);
 
@@ -152,7 +151,7 @@ describe('UploadStep Component', () => {
     });
 
     // Should use only the first image from multi-image HEIC
-    expect(heic2any).toHaveBeenCalled();
+    expect(mockHeic2any).toHaveBeenCalled();
   });
 
   // Note: Browser-level validation via the accept attribute handles non-image files
