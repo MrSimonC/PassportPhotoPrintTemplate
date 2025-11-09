@@ -1,5 +1,40 @@
 import { NextRequest, NextResponse } from 'next/server';
 import sharp from 'sharp';
+import convert from 'heic-convert';
+
+/**
+ * Detects if a buffer contains a HEIC image
+ */
+function isHEIC(buffer: Buffer): boolean {
+  // HEIC files start with specific byte patterns
+  // Check for 'ftyp' box with heic/heix/hevc/hevx brands
+  const header = buffer.toString('ascii', 4, 12);
+  return header.includes('ftyp') && (
+    buffer.toString('ascii', 8, 12).includes('heic') ||
+    buffer.toString('ascii', 8, 12).includes('heix') ||
+    buffer.toString('ascii', 8, 12).includes('hevc') ||
+    buffer.toString('ascii', 8, 12).includes('hevx') ||
+    buffer.toString('ascii', 8, 12).includes('mif1')
+  );
+}
+
+/**
+ * Converts HEIC image to PNG
+ */
+async function convertHEICToPNG(buffer: Buffer): Promise<Buffer> {
+  try {
+    // heic-convert expects a Uint8Array
+    const outputBuffer = await convert({
+      buffer: new Uint8Array(buffer),
+      format: 'PNG',
+      quality: 1
+    });
+    return Buffer.from(outputBuffer);
+  } catch (error) {
+    console.error('HEIC conversion error:', error);
+    throw new Error('Failed to convert HEIC image');
+  }
+}
 
 export async function POST(request: NextRequest) {
   try {
@@ -15,7 +50,12 @@ export async function POST(request: NextRequest) {
 
     // Remove data URL prefix if present
     const base64Data = croppedImage.replace(/^data:image\/\w+;base64,/, '');
-    const imageBuffer = Buffer.from(base64Data, 'base64');
+    let imageBuffer = Buffer.from(base64Data, 'base64');
+
+    // Check if the image is HEIC and convert if necessary
+    if (isHEIC(imageBuffer)) {
+      imageBuffer = await convertHEICToPNG(imageBuffer);
+    }
 
     // Get the dimensions of the cropped image
     const croppedImageSharp = sharp(imageBuffer);
