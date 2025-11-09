@@ -1,6 +1,7 @@
 'use client';
 
 import { useRef, useState } from 'react';
+import heic2any from 'heic2any';
 
 interface UploadStepProps {
   onUpload: (imageDataUrl: string) => void;
@@ -8,12 +9,48 @@ interface UploadStepProps {
 
 export default function UploadStep({ onUpload }: UploadStepProps) {
   const [dragActive, setDragActive] = useState(false);
+  const [isConverting, setIsConverting] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const handleFile = (file: File) => {
-    if (!file.type.startsWith('image/')) {
+  const handleFile = async (file: File) => {
+    // Check if the file is HEIC/HEIF format
+    const isHEIC = file.type === 'image/heic' ||
+                   file.type === 'image/heif' ||
+                   file.name.toLowerCase().endsWith('.heic') ||
+                   file.name.toLowerCase().endsWith('.heif');
+
+    // Validate file type (allow HEIC even if MIME type is missing)
+    if (!file.type.startsWith('image/') && !isHEIC) {
       alert('Please upload an image file');
       return;
+    }
+
+    let processedFile = file;
+
+    // Convert HEIC to JPEG if needed
+    if (isHEIC) {
+      setIsConverting(true);
+      try {
+        const convertedBlob = await heic2any({
+          blob: file,
+          toType: 'image/jpeg',
+          quality: 0.9
+        });
+
+        // heic2any can return an array of blobs for multi-image HEIC files
+        // We only need the first one for passport photos
+        const blob = Array.isArray(convertedBlob) ? convertedBlob[0] : convertedBlob;
+        processedFile = new File([blob], file.name.replace(/\.heic$/i, '.jpg'), {
+          type: 'image/jpeg'
+        });
+      } catch (error) {
+        console.error('Error converting HEIC:', error);
+        alert('Failed to convert HEIC image. Please try a different image format.');
+        setIsConverting(false);
+        return;
+      } finally {
+        setIsConverting(false);
+      }
     }
 
     const reader = new FileReader();
@@ -21,7 +58,7 @@ export default function UploadStep({ onUpload }: UploadStepProps) {
       const result = e.target?.result as string;
       onUpload(result);
     };
-    reader.readAsDataURL(file);
+    reader.readAsDataURL(processedFile);
   };
 
   const handleDrag = (e: React.DragEvent) => {
@@ -195,31 +232,44 @@ export default function UploadStep({ onUpload }: UploadStepProps) {
           <input
             ref={fileInputRef}
             type="file"
-            accept="image/*"
+            accept="image/*,.heic,.heif"
             onChange={handleChange}
             className="hidden"
           />
 
           <div className="flex flex-col items-center gap-4">
-            <span className="material-symbols-outlined text-6xl text-indigo-600 dark:text-indigo-400">
-              cloud_upload
-            </span>
+            {isConverting ? (
+              <>
+                <span className="material-symbols-outlined text-6xl text-indigo-600 dark:text-indigo-400 animate-spin">
+                  progress_activity
+                </span>
+                <p className="text-lg text-gray-600 dark:text-gray-300">
+                  Converting HEIC image...
+                </p>
+              </>
+            ) : (
+              <>
+                <span className="material-symbols-outlined text-6xl text-indigo-600 dark:text-indigo-400">
+                  cloud_upload
+                </span>
 
-            <div>
-              <button
-                onClick={handleButtonClick}
-                className="px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-lg transition-colors shadow-md"
-              >
-                Choose Photo
-              </button>
-              <p className="text-gray-500 dark:text-gray-400 mt-3">
-                or drag and drop your image here
-              </p>
-            </div>
+                <div>
+                  <button
+                    onClick={handleButtonClick}
+                    className="px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-lg transition-colors shadow-md"
+                  >
+                    Choose Photo
+                  </button>
+                  <p className="text-gray-500 dark:text-gray-400 mt-3">
+                    or drag and drop your image here
+                  </p>
+                </div>
 
-            <p className="text-sm text-gray-400 dark:text-gray-500">
-              Supported formats: JPG, PNG, GIF, WEBP
-            </p>
+                <p className="text-sm text-gray-400 dark:text-gray-500">
+                  Supported formats: JPG, PNG, GIF, WEBP, HEIC
+                </p>
+              </>
+            )}
           </div>
         </div>
 
