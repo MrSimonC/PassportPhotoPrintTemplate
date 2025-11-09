@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Link from 'next/link';
 import UploadStep from './components/UploadStep';
 import CropStep from './components/CropStep';
 import GenerateStep from './components/GenerateStep';
@@ -42,14 +43,14 @@ export default function Home() {
       <div className="bg-white dark:bg-gray-800 shadow-sm">
         <div className="max-w-4xl mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
+            <Link href="/" className="flex items-center gap-2 cursor-pointer hover:opacity-80 transition-opacity">
               <span className="material-symbols-outlined text-indigo-600 dark:text-indigo-400">
                 photo_camera
               </span>
               <h1 className="text-xl font-bold text-gray-800 dark:text-white">
                 UK Passport Photo Generator
               </h1>
-            </div>
+            </Link>
             <div className="flex items-center gap-4">
               <div className={`flex items-center gap-2 ${step >= 1 ? 'text-indigo-600 dark:text-indigo-400' : 'text-gray-400'}`}>
                 <div className={`w-8 h-8 rounded-full flex items-center justify-center font-semibold ${step >= 1 ? 'bg-indigo-600 text-white' : 'bg-gray-200 text-gray-500'}`}>
