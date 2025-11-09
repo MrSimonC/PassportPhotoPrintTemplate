@@ -29,7 +29,7 @@ async function convertHEICToPNG(buffer: Buffer): Promise<Buffer> {
       format: 'PNG',
       quality: 1
     });
-    return Buffer.from(outputBuffer);
+    return Buffer.from(outputBuffer) as Buffer;
   } catch (error) {
     console.error('HEIC conversion error:', error);
     throw new Error('Failed to convert HEIC image');
@@ -50,7 +50,7 @@ export async function POST(request: NextRequest) {
 
     // Remove data URL prefix if present
     const base64Data = croppedImage.replace(/^data:image\/\w+;base64,/, '');
-    let imageBuffer = Buffer.from(base64Data, 'base64');
+    let imageBuffer: Buffer = Buffer.from(base64Data, 'base64');
 
     // Check if the image is HEIC and convert if necessary
     if (isHEIC(imageBuffer)) {
