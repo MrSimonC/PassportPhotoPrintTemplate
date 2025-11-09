@@ -89,7 +89,7 @@ export default function UploadStep({ onUpload }: UploadStepProps) {
         </h3>
         <div className="grid md:grid-cols-2 gap-8 items-center mb-8">
           <div className="order-2 md:order-1">
-            <div className="rounded-lg overflow-hidden shadow-md">
+            <div className="rounded-lg overflow-hidden shadow-md max-w-md mx-auto">
               <img
                 src="/how-it-works-1-upload.jpg"
                 alt="Upload your photo - example showing file upload interface"
@@ -128,7 +128,7 @@ export default function UploadStep({ onUpload }: UploadStepProps) {
             </div>
           </div>
           <div>
-            <div className="rounded-lg overflow-hidden shadow-md">
+            <div className="rounded-lg overflow-hidden shadow-md max-w-md mx-auto">
               <img
                 src="/how-it-works-2-crop.jpg"
                 alt="Crop your photo - example showing cropping interface with passport photo dimensions"
@@ -141,7 +141,7 @@ export default function UploadStep({ onUpload }: UploadStepProps) {
 
         <div className="grid md:grid-cols-2 gap-8 items-center">
           <div className="order-2 md:order-1">
-            <div className="rounded-lg overflow-hidden shadow-md">
+            <div className="rounded-lg overflow-hidden shadow-md max-w-md mx-auto">
               <img
                 src="/how-it-works-3-output.jpg"
                 alt="Download and print - example showing 6 passport photos arranged in a 3x2 grid on 6x4 inch sheet"
