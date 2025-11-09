@@ -89,18 +89,13 @@ export default function UploadStep({ onUpload }: UploadStepProps) {
         </h3>
         <div className="grid md:grid-cols-2 gap-8 items-center mb-8">
           <div className="order-2 md:order-1">
-            <div className="bg-gray-100 dark:bg-gray-700 rounded-lg aspect-[4/3] flex items-center justify-center border-2 border-dashed border-gray-300 dark:border-gray-600">
-              <div className="text-center p-8">
-                <span className="material-symbols-outlined text-6xl text-gray-400 dark:text-gray-500 mb-3">
-                  photo_camera
-                </span>
-                <p className="text-gray-500 dark:text-gray-400 font-medium">
-                  [Upload your photo here]
-                </p>
-                <p className="text-sm text-gray-400 dark:text-gray-500 mt-2">
-                  Single portrait photo
-                </p>
-              </div>
+            <div className="rounded-lg overflow-hidden shadow-md">
+              <img
+                src="/how-it-works-1-upload.jpg"
+                alt="Upload your photo - example showing file upload interface"
+                className="w-full h-auto"
+                loading="lazy"
+              />
             </div>
           </div>
           <div className="order-1 md:order-2">
@@ -133,36 +128,26 @@ export default function UploadStep({ onUpload }: UploadStepProps) {
             </div>
           </div>
           <div>
-            <div className="bg-gray-100 dark:bg-gray-700 rounded-lg aspect-[4/3] flex items-center justify-center border-2 border-dashed border-gray-300 dark:border-gray-600">
-              <div className="text-center p-8">
-                <span className="material-symbols-outlined text-6xl text-gray-400 dark:text-gray-500 mb-3">
-                  crop
-                </span>
-                <p className="text-gray-500 dark:text-gray-400 font-medium">
-                  [Cropping interface preview]
-                </p>
-                <p className="text-sm text-gray-400 dark:text-gray-500 mt-2">
-                  Adjust your framing
-                </p>
-              </div>
+            <div className="rounded-lg overflow-hidden shadow-md">
+              <img
+                src="/how-it-works-2-crop.jpg"
+                alt="Crop your photo - example showing cropping interface with passport photo dimensions"
+                className="w-full h-auto"
+                loading="lazy"
+              />
             </div>
           </div>
         </div>
 
         <div className="grid md:grid-cols-2 gap-8 items-center">
           <div className="order-2 md:order-1">
-            <div className="bg-gray-100 dark:bg-gray-700 rounded-lg aspect-[4/3] flex items-center justify-center border-2 border-dashed border-gray-300 dark:border-gray-600">
-              <div className="text-center p-8">
-                <span className="material-symbols-outlined text-6xl text-gray-400 dark:text-gray-500 mb-3">
-                  grid_on
-                </span>
-                <p className="text-gray-500 dark:text-gray-400 font-medium">
-                  [6 photos on 6" × 4" sheet]
-                </p>
-                <p className="text-sm text-gray-400 dark:text-gray-500 mt-2">
-                  Ready to print: 3 × 2 grid
-                </p>
-              </div>
+            <div className="rounded-lg overflow-hidden shadow-md">
+              <img
+                src="/how-it-works-3-output.jpg"
+                alt="Download and print - example showing 6 passport photos arranged in a 3x2 grid on 6x4 inch sheet"
+                className="w-full h-auto"
+                loading="lazy"
+              />
             </div>
           </div>
           <div className="order-1 md:order-2">
