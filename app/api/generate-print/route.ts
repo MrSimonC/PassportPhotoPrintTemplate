@@ -51,6 +51,7 @@ export async function POST(request: NextRequest) {
         right: borderSize,
         background: { r: 255, g: 255, b: 255 }
       })
+      .png()
       .toBuffer();
 
     // Calculate spacing for a 3x2 grid (3 columns, 2 rows)
