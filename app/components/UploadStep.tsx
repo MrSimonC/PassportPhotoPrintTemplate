@@ -31,12 +31,20 @@ export default function UploadStep({ onUpload }: UploadStepProps) {
       setIsConverting(true);
       try {
         // Ensure we're in a browser environment
-        if (typeof window === 'undefined') {
+        if (typeof window === 'undefined' || typeof document === 'undefined') {
           throw new Error('HEIC conversion is only available in the browser');
         }
 
         // Dynamic import to avoid SSR issues (heic2any uses browser APIs)
-        const heic2anyModule = await import('heic2any');
+        // Only import when we're absolutely sure we're in a client environment
+        let heic2anyModule;
+        try {
+          heic2anyModule = await import('heic2any');
+        } catch (importError) {
+          console.error('Failed to import heic2any:', importError);
+          throw new Error('Failed to load HEIC conversion library');
+        }
+
         const heic2any = (heic2anyModule.default ?? heic2anyModule) as typeof import('heic2any').default;
 
         if (typeof heic2any !== 'function') {
