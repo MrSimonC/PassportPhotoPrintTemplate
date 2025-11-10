@@ -30,12 +30,18 @@ export default function UploadStep({ onUpload }: UploadStepProps) {
     if (isHEIC) {
       setIsConverting(true);
       try {
+        // Ensure we're in a browser environment
+        if (typeof window === 'undefined') {
+          throw new Error('HEIC conversion is only available in the browser');
+        }
+
         // Dynamic import to avoid SSR issues (heic2any uses browser APIs)
         const heic2anyModule = await import('heic2any');
         const heic2any = (heic2anyModule.default ?? heic2anyModule) as typeof import('heic2any').default;
 
         if (typeof heic2any !== 'function') {
-          throw new Error('heic2any failed to load');
+          console.error('heic2any module structure:', heic2anyModule);
+          throw new Error('heic2any failed to load correctly');
         }
 
         const convertedBlob = await heic2any({
@@ -52,6 +58,11 @@ export default function UploadStep({ onUpload }: UploadStepProps) {
         });
       } catch (error) {
         console.error('Error converting HEIC:', error);
+        console.error('Error details:', {
+          message: error instanceof Error ? error.message : 'Unknown error',
+          type: typeof error,
+          browser: typeof window !== 'undefined' ? 'yes' : 'no'
+        });
         alert('Failed to convert HEIC image. Please try a different image format.');
         setIsConverting(false);
         return;
