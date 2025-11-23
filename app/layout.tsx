@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import ClarityAnalytics from "./components/ClarityAnalytics";
 
 export const metadata: Metadata = {
   title: "Free Passport Photo Print Template - Create 6x4 Print-Ready Photos",
@@ -14,6 +15,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="antialiased">
+        <ClarityAnalytics />
         {children}
       </body>
     </html>
